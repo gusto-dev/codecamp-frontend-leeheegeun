@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { gql, useMutation } from '@apollo/client';
 import {
   Address,
   ButtonWrapper,
@@ -24,6 +25,14 @@ import {
   ZipcodeWrapper,
 } from '../../../styles/emotion';
 
+const CREATE_BOARD = gql`
+  mutation createBoard($createBoardInput: CreateBoardInput!) {
+    createBoard(createBoardInput: $createBoardInput) {
+      _id
+    }
+  }
+`;
+
 export default function BoardWriteUI() {
   const [writer, setWriter] = useState('');
   const [password, setPassword] = useState('');
@@ -34,6 +43,8 @@ export default function BoardWriteUI() {
   const [passwordError, setPasswordError] = useState('');
   const [titleError, setTitleError] = useState('');
   const [contentsError, setContentsError] = useState('');
+
+  const [createBoard] = useMutation(CREATE_BOARD);
 
   const onChangeWriter = (event) => {
     setWriter(event.target.value);
@@ -78,6 +89,17 @@ export default function BoardWriteUI() {
     }
     if (writer && password && title && contents) {
       // 메시지 알림전, Backend 서버의 API 요청하기
+      const result = createBoard({
+        variables: {
+          createBoardInput: {
+            writer: writer,
+            password: password,
+            title: title,
+            contents: contents,
+          },
+        },
+      });
+      console.log(result);
       alert('게시글이 등록되었습니다.');
     }
   };
