@@ -24,6 +24,7 @@ import {
   Zipcode,
   ZipcodeWrapper,
 } from '../../../styles/emotion';
+import { useRouter } from 'next/router';
 
 const CREATE_BOARD = gql`
   mutation createBoard($createBoardInput: CreateBoardInput!) {
@@ -34,6 +35,8 @@ const CREATE_BOARD = gql`
 `;
 
 export default function BoardWriteUI() {
+  const router = useRouter();
+
   const [writer, setWriter] = useState('');
   const [password, setPassword] = useState('');
   const [title, setTitle] = useState('');
@@ -74,7 +77,7 @@ export default function BoardWriteUI() {
     }
   };
 
-  const onClickSubmit = () => {
+  const onClickSubmit = async () => {
     if (!writer) {
       setWriterError('작성자를 입력해주세요.');
     }
@@ -89,18 +92,23 @@ export default function BoardWriteUI() {
     }
     if (writer && password && title && contents) {
       // 메시지 알림전, Backend 서버의 API 요청하기
-      const result = createBoard({
-        variables: {
-          createBoardInput: {
-            writer: writer,
-            password: password,
-            title: title,
-            contents: contents,
+      try {
+        const result = await createBoard({
+          variables: {
+            createBoardInput: {
+              writer,
+              password,
+              title,
+              contents,
+            },
           },
-        },
-      });
-      console.log(result);
-      alert('게시글이 등록되었습니다.');
+        });
+
+        // console.log(result.data.createBoard._id);
+        router.push(`/boards/${result.data.createBoard._id}`);
+      } catch (error) {
+        alert(error.message);
+      }
     }
   };
 
