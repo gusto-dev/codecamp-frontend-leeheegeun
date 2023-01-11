@@ -1,19 +1,8 @@
 import { useState } from 'react';
-import { gql, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 
 import BoardWriteUI from './BoardWrite.presenter';
-
-const CREATE_BOARD = gql`
-  # 변수의 타입 적는곳
-  mutation createBoard($writer: String, $title: String, $contents: String) {
-    # 실제 전달할 변수 적는곳
-    createBoard(writer: $writer, title: $title, contents: $contents) {
-      _id
-      number
-      message
-    }
-  }
-`;
+import { CREATE_BOARD } from './BoardWrite.queries';
 
 export default function BoardWrite() {
   // 자바스크립트 영역
@@ -31,7 +20,7 @@ export default function BoardWrite() {
         contents: contents,
       },
     });
-    console.log(result);
+    alert(result);
   };
 
   const handleChangeWriter = (event) => {
@@ -49,10 +38,10 @@ export default function BoardWrite() {
   // UI 영역
   return (
     <BoardWriteUI
-      aaa={handleClickSubmit}
-      bbb={handleChangeWriter}
-      ccc={handleChangeTitle}
-      ddd={handleChangeContents}
+      handleClickSubmit={handleClickSubmit}
+      handleChangeWriter={handleChangeWriter}
+      handleChangeTitle={handleChangeTitle}
+      handleChangeContents={handleChangeContents}
     />
   );
 }
