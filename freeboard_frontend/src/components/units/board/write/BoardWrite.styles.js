@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 
 export const Wrapper = styled.div`
   width: 1200px;
+  /* height: 1847px; */
   border: 1px solid black;
   margin: 100px;
   padding-top: 80px;
@@ -163,7 +164,8 @@ export const SubmitButton = styled.button`
   margin-left: 12px;
   margin-right: 12px;
   cursor: pointer;
-  background-color: ${(props) => (props.isActive ? 'yellow' : 'gray')};
+
+  background-color: ${(props) => (props.isActive ? 'yellow' : 'none')};
 `;
 
 export const Error = styled.div`

@@ -1,4 +1,4 @@
-import { getDate } from '/src/commons/utils/utils';
+import { getDate } from '/src/commons/libraries/utils';
 import * as S from './BoardDetail.styles';
 
 export default function BoardDetailUI(props) {
@@ -7,7 +7,7 @@ export default function BoardDetailUI(props) {
       <S.CardWrapper>
         <S.Header>
           <S.AvatarWrapper>
-            <S.Avatar src="/vercel.svg" />
+            <S.Avatar src="/images/avatar.png" />
             <S.Info>
               <S.Writer>{props.data?.fetchBoard?.writer}</S.Writer>
               <S.CreatedAt>
@@ -22,8 +22,8 @@ export default function BoardDetailUI(props) {
         </S.Body>
       </S.CardWrapper>
       <S.BottomWrapper>
-        <S.Button>목록으로</S.Button>
-        <S.Button>수정하기</S.Button>
+        <S.Button onClick={props.onClickMoveToBoardList}>목록으로</S.Button>
+        <S.Button onClick={props.onClickMoveToBoardEdit}>수정하기</S.Button>
         <S.Button>삭제하기</S.Button>
       </S.BottomWrapper>
     </S.Wrapper>
