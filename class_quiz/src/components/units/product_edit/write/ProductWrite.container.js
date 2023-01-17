@@ -52,17 +52,18 @@ export default function ProductWrite(props) {
   };
 
   const handleClickUpdate = async () => {
+    const myvariables = {
+      productId: router.query.number,
+      updateProductInput: {},
+    };
+    if (productName) myvariables.updateProductInput.name = productName;
+    if (productdetail) myvariables.updateProductInput.detail = productdetail;
+    if (productPrice)
+      myvariables.updateProductInput.price = Number(productPrice);
+
     // 1. 수정하기 뮤테이션 날리기
     const result = await updateProduct({
-      variables: {
-        productId: router.query.number,
-        seller: seller,
-        updateProductInput: {
-          name: productName,
-          detail: productdetail,
-          price: Number(productPrice),
-        },
-      },
+      variables: myvariables,
     });
     alert(result.data.updateProduct.message);
 
@@ -79,6 +80,7 @@ export default function ProductWrite(props) {
       handleClickSubmit={handleClickSubmit}
       handleClickUpdate={handleClickUpdate}
       isEdit={props.isEdit}
+      data={props.data}
     />
   );
 }
