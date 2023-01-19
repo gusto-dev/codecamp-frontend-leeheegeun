@@ -1,11 +1,16 @@
 import { getDate } from '../../../../commons/libraries/utils';
 import * as S from './BoardCommentList.styles';
+import { IBoardCommentListUIProps } from './BoardCommentList.types';
 
-export default function BoardCommentListUI(props) {
+export default function BoardCommentListUI(props: IBoardCommentListUIProps) {
   return (
     <div>
       {props.data?.fetchBoardComments.map((el) => (
-        <S.ItemWrapper key={el._id}>
+        <S.ItemWrapper
+          key={el._id}
+          id={el.writer ?? ''}
+          onClick={props.onClickAlert}
+        >
           <S.FlexWrapper>
             <S.Avatar src="/images/avatar.png" />
             <S.MainWrapper>

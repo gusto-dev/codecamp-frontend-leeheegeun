@@ -1,10 +1,16 @@
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { useRouter } from 'next/router';
 import BoardWriteUI from './BoardWrite.presenter';
 import { CREATE_BOARD, UPDATE_BOARD } from './BoardWrite.queries';
+import { IBoardWriteProps, IUpdateBoardInput } from './BoardWrite.types';
+import {
+  IMutation,
+  IMutationCreateBoardArgs,
+  IMutationUpdateBoardArgs,
+} from '../../../../commons/types/generated/types';
 
-export default function BoardWrite(props) {
+export default function BoardWrite(props: IBoardWriteProps) {
   const router = useRouter();
   const [isActive, setIsActive] = useState(false);
 
@@ -18,10 +24,16 @@ export default function BoardWrite(props) {
   const [titleError, setTitleError] = useState('');
   const [contentsError, setContentsError] = useState('');
 
-  const [createBoard] = useMutation(CREATE_BOARD);
-  const [updateBoard] = useMutation(UPDATE_BOARD);
+  const [createBoard] = useMutation<
+    Pick<IMutation, 'createBoard'>,
+    IMutationCreateBoardArgs
+  >(CREATE_BOARD);
+  const [updateBoard] = useMutation<
+    Pick<IMutation, 'updateBoard'>,
+    IMutationUpdateBoardArgs
+  >(UPDATE_BOARD);
 
-  const onChangeWriter = (event) => {
+  const onChangeWriter = (event: ChangeEvent<HTMLInputElement>) => {
     setWriter(event.target.value);
     if (event.target.value !== '') {
       setWriterError('');
@@ -34,7 +46,7 @@ export default function BoardWrite(props) {
     }
   };
 
-  const onChangePassword = (event) => {
+  const onChangePassword = (event: ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value);
     if (event.target.value !== '') {
       setPasswordError('');
@@ -47,7 +59,7 @@ export default function BoardWrite(props) {
     }
   };
 
-  const onChangeTitle = (event) => {
+  const onChangeTitle = (event: ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
     if (event.target.value !== '') {
       setTitleError('');
@@ -60,7 +72,7 @@ export default function BoardWrite(props) {
     }
   };
 
-  const onChangeContents = (event) => {
+  const onChangeContents = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setContents(event.target.value);
     if (event.target.value !== '') {
       setContentsError('');
@@ -91,36 +103,48 @@ export default function BoardWrite(props) {
         const result = await createBoard({
           variables: {
             createBoardInput: {
-              writer: writer,
-              password: password,
-              title: title,
-              contents: contents,
+              writer,
+              password,
+              title,
+              contents,
             },
           },
         });
-        console.log(result.data.createBoard._id);
-        router.push(`/boards/${result.data.createBoard._id}`);
+        console.log(result.data?.createBoard._id);
+        void router.push(`/boards/${result.data?.createBoard._id ?? ''}`);
       } catch (error) {
-        alert(error.message);
+        if (error instanceof Error) alert(error.message);
       }
     }
   };
 
   const onClickUpdate = async () => {
+    if (typeof router.query.boardId !== 'string') return;
+    if (!title && !contents) {
+      alert('수정한 내용이 없습니다.');
+      return;
+    }
+
+    if (!password) {
+      alert('비밀번호를 입력해주세요.');
+      return;
+    }
+
+    const updateBoardInput: IUpdateBoardInput = {};
+    if (title) updateBoardInput.title = title;
+    if (contents) updateBoardInput.contents = contents;
+
     try {
       const result = await updateBoard({
         variables: {
           boardId: router.query.boardId,
-          password: password,
-          updateBoardInput: {
-            title: title,
-            contents: contents,
-          },
+          password,
+          updateBoardInput,
         },
       });
-      router.push(`/boards/${result.data.updateBoard._id}`);
+      void router.push(`/boards/${result.data?.updateBoard._id ?? ''}`);
     } catch (error) {
-      alert(error.message);
+      if (error instanceof Error) alert(error.message);
     }
   };
 
@@ -138,6 +162,7 @@ export default function BoardWrite(props) {
       onClickSubmit={onClickSubmit}
       onClickUpdate={onClickUpdate}
       isEdit={props.isEdit}
+      data={props.data}
     />
   );
 }
