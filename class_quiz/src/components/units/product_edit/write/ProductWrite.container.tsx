@@ -1,11 +1,12 @@
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useMutation } from '@apollo/client';
 
 import ProductWriteUI from './ProductWrite.presenter';
 import { CREATE_PRODUCT, UPDATE_PRODUCT } from './ProductWrite.queries';
+import { IMyVariables, IProductWriteProps } from './ProductWrite.types';
 
-export default function ProductWrite(props) {
+export default function ProductWrite(props: IProductWriteProps) {
   const router = useRouter();
 
   const [createProduct] = useMutation(CREATE_PRODUCT);
@@ -16,19 +17,19 @@ export default function ProductWrite(props) {
   const [productdetail, setProductDetail] = useState('');
   const [productPrice, setProductPrice] = useState('');
 
-  const handleChangeSeller = (event) => {
+  const handleChangeSeller = (event: ChangeEvent<HTMLInputElement>) => {
     setSeller(event.target.value);
   };
 
-  const handleChangeProductName = (event) => {
+  const handleChangeProductName = (event: ChangeEvent<HTMLInputElement>) => {
     setProductName(event.target.value);
   };
 
-  const handleChangeProductDetail = (event) => {
+  const handleChangeProductDetail = (event: ChangeEvent<HTMLInputElement>) => {
     setProductDetail(event.target.value);
   };
 
-  const handleChangeProductPrice = (event) => {
+  const handleChangeProductPrice = (event: ChangeEvent<HTMLInputElement>) => {
     setProductPrice(event.target.value);
   };
 
@@ -46,13 +47,14 @@ export default function ProductWrite(props) {
       });
       alert(result.data.createProduct.message);
       router.push(`/08/${result.data.createProduct._id}`);
-    } catch (error) {
+    } catch (error: any) {
       console.log(error.message);
     }
   };
 
   const handleClickUpdate = async () => {
-    const myvariables = {
+    console.log(router.query.number);
+    const myvariables: IMyVariables = {
       productId: router.query.number,
       updateProductInput: {},
     };

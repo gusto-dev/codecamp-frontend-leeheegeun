@@ -1,4 +1,8 @@
-export default function ProductDetailUI(props) {
+interface IProductDetailUIProps {
+  data?: any;
+  handleClickMoveToEdit: () => void;
+}
+export default function ProductDetailUI(props: IProductDetailUIProps) {
   return (
     <div>
       <div>판매자: {props.data?.fetchProduct.seller}</div>

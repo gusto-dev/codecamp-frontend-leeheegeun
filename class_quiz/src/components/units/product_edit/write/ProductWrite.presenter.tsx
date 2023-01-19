@@ -1,4 +1,6 @@
-export default function ProductWriteUI(props) {
+import { IProductWriteUIProps } from './ProductWrite.types';
+
+export default function ProductWriteUI(props: IProductWriteUIProps) {
   return (
     <div>
       <div>상품 {props.isEdit ? '수정' : '등록'} 페이지</div>
@@ -7,7 +9,7 @@ export default function ProductWriteUI(props) {
         <input
           type="text"
           onChange={props.handleChangeProductName}
-          defaultValue={props.data?.fetchProduct.name}
+          defaultValue={props?.data?.fetchProduct?.name ?? ''}
         />
       </div>
       <div>
@@ -15,7 +17,7 @@ export default function ProductWriteUI(props) {
         <input
           type="text"
           onChange={props.handleChangeProductDetail}
-          defaultValue={props.data?.fetchProduct.detail}
+          defaultValue={props?.data?.fetchProduct?.detail ?? ''}
         />
       </div>
       <div>
@@ -23,7 +25,7 @@ export default function ProductWriteUI(props) {
         <input
           type="number"
           onChange={props.handleChangeProductPrice}
-          defaultValue={props.data?.fetchProduct.price}
+          defaultValue={props?.data?.fetchProduct?.price ?? ''}
         />
       </div>
       <div>
@@ -31,7 +33,7 @@ export default function ProductWriteUI(props) {
         <input
           type="text"
           onChange={props.handleChangeSeller}
-          defaultValue={props.data?.fetchProduct.seller}
+          defaultValue={props?.data?.fetchProduct?.seller ?? ''}
         />
       </div>
       <button
