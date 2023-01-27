@@ -1,5 +1,5 @@
-import { gql, useQuery, useMutation } from '@apollo/client';
-import styled from '@emotion/styled';
+import { gql, useQuery, useMutation } from "@apollo/client";
+import styled from "@emotion/styled";
 
 const FETCH_BOARDS = gql`
   query fetchBoards {
@@ -42,7 +42,7 @@ export default function StaticRoutedPage() {
       variables: { number: Number(event.target.id) },
       refetchQueries: [{ query: FETCH_BOARDS }],
     });
-    alert('삭제');
+    alert("삭제");
   };
 
   return (
