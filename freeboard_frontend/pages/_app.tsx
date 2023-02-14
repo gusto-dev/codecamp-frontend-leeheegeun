@@ -1,11 +1,11 @@
-import { AppProps } from "next/app";
-import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
-
 import "../styles/globals.css";
+import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+import "antd/dist/antd.css";
+import { AppProps } from "next/app";
 
-export default function App({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps }: AppProps) {
   const client = new ApolloClient({
-    uri: "https://backendonline.codebootcamp.co.kr/graphql",
+    uri: "http://backendonline.codebootcamp.co.kr/graphql",
     cache: new InMemoryCache(),
   });
 
@@ -15,3 +15,5 @@ export default function App({ Component, pageProps }: AppProps) {
     </ApolloProvider>
   );
 }
+
+export default MyApp;

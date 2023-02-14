@@ -13,14 +13,9 @@ module.exports = {
   plugins: ["react"],
   rules: {
     "react/react-in-jsx-scope": "off",
-    "@typescript-eslint/explicit-function-return-type": "off", // 리턴타입 명시 (끌지말지 선택사항)
+    "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/strict-boolean-expressions": "off",
-    "@typescript-eslint/no-misused-promises": "off", // Promise 명시 (끌지말지 선택사항)
+    "@typescript-eslint/no-misused-promises": "off",
     "@typescript-eslint/triple-slash-reference": "off",
-  },
-  settings: {
-    react: {
-      version: "detect",
-    },
   },
 };
